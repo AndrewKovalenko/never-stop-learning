@@ -32,7 +32,7 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 
 	overflow := false
 
-	var result *ListNode
+	var result, lastElement *ListNode
 
 	for {
 		newNode := new(ListNode)
@@ -54,15 +54,27 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 
 		if result == nil {
 			result = newNode
+			lastElement = newNode
 		} else {
-			newNode.Next = result
-			result = newNode
+			lastElement.Next = newNode
+			lastElement = newNode
 		}
 
-		l1 = l1.Next
-		l2 = l2.Next
+		if l1 != nil {
+			l1 = l1.Next
+		}
+
+		if l2 != nil {
+			l2 = l2.Next
+		}
 
 		if l1 == nil && l2 == nil {
+			if overflow {
+				overflowNode := new(ListNode)
+				overflowNode.Val = 1
+				lastElement.Next = overflowNode
+			}
+
 			break
 		}
 	}
